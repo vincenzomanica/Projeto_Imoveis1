@@ -16,7 +16,8 @@ namespace Projeto_Imoveis
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CadastroPessoas());
+            Application.Run(new MDIParent1());
+
         }
     }
 }

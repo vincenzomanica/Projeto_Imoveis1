@@ -11,7 +11,7 @@ namespace Projeto_Imoveis
         bool inserir (T obj);
         bool alterar(T obj);
         bool deletar (T obj);
-        T ListarUm(int ID);
+        T ListarUm(string ID);
         List<T> ListarTodos();
     }
 
