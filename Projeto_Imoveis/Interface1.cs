@@ -8,7 +8,7 @@ namespace Projeto_Imoveis
 {
     public interface Base<T>
     {
-        bool inserir (T obj);
+        bool inserir(T obj);
         bool alterar(T obj);
         bool deletar (T obj);
         T ListarUm(string ID);

@@ -74,6 +74,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmCapturaImagem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCapturaImagem.Designer.cs">
+      <DependentUpon>frmCapturaImagem.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmListaClientes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,9 @@
     <Compile Include="UserControl1.Designer.cs">
       <DependentUpon>UserControl1.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="frmCapturaImagem.resx">
+      <DependentUpon>frmCapturaImagem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmListaClientes.resx">
       <DependentUpon>FrmListaClientes.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +129,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="UserControl1.resx">
       <DependentUpon>UserControl1.cs</DependentUpon>
@@ -149,6 +159,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\68b71f8f1b8f8d27230f250bfc0e87c1.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

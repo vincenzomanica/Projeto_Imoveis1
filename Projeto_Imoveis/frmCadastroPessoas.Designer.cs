@@ -33,7 +33,6 @@
             this.txtID = new System.Windows.Forms.TextBox();
             this.grpDadosPessoais = new System.Windows.Forms.GroupBox();
             this.cmbEstadoCivil = new System.Windows.Forms.ComboBox();
-            this.txtGenero = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -42,7 +41,6 @@
             this.btnCarregar = new System.Windows.Forms.Button();
             this.btnCapturar = new System.Windows.Forms.Button();
             this.pctBoxCliente = new System.Windows.Forms.PictureBox();
-            this.txtCPF = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -52,7 +50,6 @@
             this.btnLimpar = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtCEP = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txtNumero = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -68,6 +65,9 @@
             this.txtComplemento = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.cmbGenero = new System.Windows.Forms.ComboBox();
+            this.txtCPF = new System.Windows.Forms.MaskedTextBox();
+            this.txtCEP = new System.Windows.Forms.MaskedTextBox();
             this.grpDadosPessoais.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctBoxCliente)).BeginInit();
@@ -104,14 +104,14 @@
             // 
             // grpDadosPessoais
             // 
+            this.grpDadosPessoais.Controls.Add(this.txtCPF);
+            this.grpDadosPessoais.Controls.Add(this.cmbGenero);
             this.grpDadosPessoais.Controls.Add(this.cmbEstadoCivil);
-            this.grpDadosPessoais.Controls.Add(this.txtGenero);
             this.grpDadosPessoais.Controls.Add(this.label16);
             this.grpDadosPessoais.Controls.Add(this.label17);
             this.grpDadosPessoais.Controls.Add(this.label12);
             this.grpDadosPessoais.Controls.Add(this.dataTimePickerNascimento);
             this.grpDadosPessoais.Controls.Add(this.groupBox2);
-            this.grpDadosPessoais.Controls.Add(this.txtCPF);
             this.grpDadosPessoais.Controls.Add(this.label5);
             this.grpDadosPessoais.Controls.Add(this.label4);
             this.grpDadosPessoais.Controls.Add(this.label3);
@@ -127,18 +127,12 @@
             // 
             // cmbEstadoCivil
             // 
+            this.cmbEstadoCivil.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEstadoCivil.FormattingEnabled = true;
             this.cmbEstadoCivil.Location = new System.Drawing.Point(6, 212);
             this.cmbEstadoCivil.Name = "cmbEstadoCivil";
             this.cmbEstadoCivil.Size = new System.Drawing.Size(161, 21);
             this.cmbEstadoCivil.TabIndex = 23;
-            // 
-            // txtGenero
-            // 
-            this.txtGenero.Location = new System.Drawing.Point(7, 163);
-            this.txtGenero.Name = "txtGenero";
-            this.txtGenero.Size = new System.Drawing.Size(161, 20);
-            this.txtGenero.TabIndex = 20;
             // 
             // label16
             // 
@@ -222,13 +216,6 @@
             this.pctBoxCliente.Size = new System.Drawing.Size(186, 153);
             this.pctBoxCliente.TabIndex = 0;
             this.pctBoxCliente.TabStop = false;
-            // 
-            // txtCPF
-            // 
-            this.txtCPF.Location = new System.Drawing.Point(9, 121);
-            this.txtCPF.Name = "txtCPF";
-            this.txtCPF.Size = new System.Drawing.Size(158, 20);
-            this.txtCPF.TabIndex = 9;
             // 
             // label5
             // 
@@ -320,13 +307,6 @@
             this.label6.TabIndex = 8;
             this.label6.Text = "Municipio";
             // 
-            // txtCEP
-            // 
-            this.txtCEP.Location = new System.Drawing.Point(11, 41);
-            this.txtCEP.Name = "txtCEP";
-            this.txtCEP.Size = new System.Drawing.Size(161, 20);
-            this.txtCEP.TabIndex = 9;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -389,6 +369,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtCEP);
             this.groupBox1.Controls.Add(this.txtBairro);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.button3);
@@ -401,7 +382,6 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.txtNumero);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.txtCEP);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -444,10 +424,10 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Font = new System.Drawing.Font("Modern No. 20", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.Location = new System.Drawing.Point(382, 23);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(91, 16);
+            this.label11.Size = new System.Drawing.Size(77, 15);
             this.label11.TabIndex = 18;
             this.label11.Text = "Complemento";
             // 
@@ -476,6 +456,36 @@
             this.label14.TabIndex = 2;
             this.label14.Text = "ID";
             // 
+            // cmbGenero
+            // 
+            this.cmbGenero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbGenero.FormattingEnabled = true;
+            this.cmbGenero.Items.AddRange(new object[] {
+            "Confirmar",
+            "Femenino",
+            "Masculino"});
+            this.cmbGenero.Location = new System.Drawing.Point(6, 163);
+            this.cmbGenero.Name = "cmbGenero";
+            this.cmbGenero.Size = new System.Drawing.Size(161, 21);
+            this.cmbGenero.TabIndex = 24;
+            // 
+            // txtCPF
+            // 
+            this.txtCPF.Location = new System.Drawing.Point(6, 122);
+            this.txtCPF.Mask = "000,000,000-00";
+            this.txtCPF.Name = "txtCPF";
+            this.txtCPF.Size = new System.Drawing.Size(161, 20);
+            this.txtCPF.TabIndex = 25;
+            this.txtCPF.ValidatingType = typeof(int);
+            // 
+            // txtCEP
+            // 
+            this.txtCEP.Location = new System.Drawing.Point(12, 41);
+            this.txtCEP.Mask = "00000-9999";
+            this.txtCEP.Name = "txtCEP";
+            this.txtCEP.Size = new System.Drawing.Size(155, 20);
+            this.txtCEP.TabIndex = 23;
+            // 
             // frmCadastroPessoas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -492,6 +502,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtID);
             this.Name = "frmCadastroPessoas";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cadastro Clientes";
             this.grpDadosPessoais.ResumeLayout(false);
             this.grpDadosPessoais.PerformLayout();
@@ -515,12 +526,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtCPF;
         private System.Windows.Forms.Button btnSalvar;
         private System.Windows.Forms.Button btnLimpar;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtCEP;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtNumero;
         private System.Windows.Forms.Label label9;
@@ -543,9 +552,11 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox txtGenero;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.ComboBox cmbEstadoCivil;
+        private System.Windows.Forms.MaskedTextBox txtCPF;
+        private System.Windows.Forms.ComboBox cmbGenero;
+        private System.Windows.Forms.MaskedTextBox txtCEP;
     }
 }
 

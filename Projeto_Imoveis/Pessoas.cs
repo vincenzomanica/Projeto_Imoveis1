@@ -306,42 +306,72 @@ namespace Projeto_Imoveis
     {
         protected string arquivoPath = @"C:\Users\vincenzo.manica\ListaPessoas.json";
 
-        private string ID { get; set; }
-        private string Telefone { get; set; }
-        private string CPF { get; set; }
-        private string Nome { get; set; }
-        private string Cidade { get; set; }
-        private string UF { get; set; }
-        private string Logradouro { get; set; }
-        private string Bairro { get; set; }
-        private string Numero { get; set; }
-        private string CEP { get; set; }
-        private string EstadoCivil { get; set; }
-        private string DataDeNascimento { get; set; }
-        private string Genero { get; set; }
+        public string ID { get; set; }
+        public string Telefone { get; set; }
+        public string CPF { get; set; }
+        public string Nome { get; set; }
+        public string Cidade { get; set; }
+        public string UF { get; set; }
+        public string Logradouro { get; set; }
+        public string Bairro { get; set; }
+        public string Numero { get; set; }
+        public string CEP { get; set; }
+        public string EstadoCivil { get; set; }
+        public string DataDeNascimento { get; set; }
+        public string Genero { get; set; }
+        public string Imagem64 { get; set; }    
 
 
-        public async Task<bool> AlterarAsync(Pessoas obj)
+
+        public bool alterar(Pessoas obj)
+        {
+
+            List<Pessoas> pessoas = ListarTodos();
+            try
+            {
+                foreach (Pessoas p in pessoas)
+                {
+                    if (p.ID == obj.ID)
+                    {
+                        p.ID = obj.ID;
+                        p.CPF = obj.CPF;
+                        p.Nome = obj.Nome;
+                        p.Telefone = obj.Telefone;
+                        p.Logradouro = obj.Logradouro;
+                        p.Numero = obj.Numero;
+                        p.Cidade = obj.Cidade;
+                        p.UF = obj.UF;
+                        p.CEP = obj.CEP;
+                        p.Bairro = obj.Bairro;
+                        p.DataDeNascimento = obj.DataDeNascimento;
+                        p.EstadoCivil = obj.EstadoCivil;
+                        p.Genero = obj.Genero;
+                    }
+                }
+
+
+                string jsonString = JsonConvert.SerializeObject(pessoas);
+                File.WriteAllText(arquivoPath, jsonString);
+
+
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool deletar(Pessoas obj)
         {
             try
             {
-                List<Pessoas> pessoas = await ListarTodosAsync();
+                List<Pessoas> pessoas = ListarTodos();
                 var pessoa = pessoas.Find(p => p.ID == obj.ID);
                 if (pessoa != null)
                 {
-                    pessoa.CPF = obj.CPF;
-                    pessoa.Nome = obj.Nome;
-                    pessoa.Telefone = obj.Telefone;
-                    pessoa.Logradouro = obj.Logradouro;
-                    pessoa.Numero = obj.Numero;
-                    pessoa.Cidade = obj.Cidade;
-                    pessoa.UF = obj.UF;
-                    pessoa.CEP = obj.CEP;
-                    pessoa.Bairro = obj.Bairro;
-                    pessoa.DataDeNascimento = obj.DataDeNascimento;
-                    pessoa.EstadoCivil = obj.EstadoCivil;
-                    pessoa.Genero = obj.Genero;
-
+                    pessoas.Remove(pessoa);
                     string jsonString = JsonConvert.SerializeObject(pessoas);
                     File.WriteAllText(arquivoPath, jsonString);
                     return true;
@@ -354,19 +384,17 @@ namespace Projeto_Imoveis
             }
         }
 
-      
-
-        public async Task<bool> DeletarAsync(Pessoas obj)
+        public bool inserir(Pessoas obj)
         {
             try
             {
-                List<Pessoas> pessoas = await ListarTodosAsync();
+                List<Pessoas> pessoas = ListarTodos();
                 var pessoa = pessoas.Find(p => p.ID == obj.ID);
                 if (pessoa != null)
                 {
                     pessoas.Remove(pessoa);
                     string jsonString = JsonConvert.SerializeObject(pessoas);
-                   File.WriteAllText(arquivoPath, jsonString);
+                    File.WriteAllText(arquivoPath, jsonString);
                     return true;
                 }
                 return false;
@@ -377,52 +405,25 @@ namespace Projeto_Imoveis
             }
         }
 
-        public bool inserir(Pessoas obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> InserirAsync(Pessoas obj)
-        {
-            try
-            {
-                List<Pessoas> pessoas = await ListarTodosAsync();
-                obj.ID = Guid.NewGuid().ToString();
-                pessoas.Add(obj);
-                string jsonString = JsonConvert.SerializeObject(pessoas);
-                 File.WriteAllText(arquivoPath, jsonString);
-                return true;
-            }
-            catch (IOException)
-            {
-                return false;
-            }
-        }
-
         public List<Pessoas> ListarTodos()
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<Pessoas>> ListarTodosAsync()
-        {
             try
             {
-                string json =  File.ReadAllText(arquivoPath);
+                string json = File.ReadAllText(arquivoPath);
                 return JsonConvert.DeserializeObject<List<Pessoas>>(json);
             }
             catch (IOException)
             {
                 return new List<Pessoas>();
             }
+
         }
 
-        
-
-        public async Task<Pessoas> ListarUmAsync(string id)
+        public Pessoas ListarUm(string ID)
         {
-            List<Pessoas> pessoas = await ListarTodosAsync();
-            return pessoas.Find(p => p.ID == id) ?? new Pessoas();
+            List<Pessoas> pessoas = ListarTodos();
+            return pessoas.Find(p => p.ID == ID) ?? new Pessoas();
         }
     }
+
 }

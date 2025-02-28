@@ -117,7 +117,7 @@ namespace Projeto_Imoveis
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            ListaDeClientes listaDeClientes = new ListaDeClientes;
+            ListaDeClientes listaDeClientes = new ListaDeClientes();
             listaDeClientes.ShowDialog();
 
         }

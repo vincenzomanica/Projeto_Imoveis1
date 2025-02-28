@@ -12,6 +12,7 @@ namespace Projeto_Imoveis
 {
     public partial class ListaDeClientes : Form
     {
+         private Pessoas objeto = new Pessoas();
         public ListaDeClientes()
         {
             InitializeComponent();
@@ -24,12 +25,28 @@ namespace Projeto_Imoveis
 
         private void ListaDeClientes_Load(object sender, EventArgs e)
         {
+            
+            lswListaClientes.View = View.Details;
+            lswListaClientes.Columns.Add("ID", 50, HorizontalAlignment.Left);
+            lswListaClientes.Columns.Add("Nome", 100, HorizontalAlignment.Left);
+            lswListaClientes.Columns.Add("Telefone", 100, HorizontalAlignment.Left);
+            lswListaClientes.Columns.Add("CPF", 100, HorizontalAlignment.Left);
             Carregarlsw();
+
         }
         private void Carregarlsw()
-          {
-            lswListaClientes.Items.Add(new ListViewItem())
-          }
+        {
+            List<Pessoas> lista = new List<Pessoas>();
+            lista = objeto.ListarTodos();
+            foreach (Pessoas item in lista)
+            {
+                ListViewItem lvi = new ListViewItem(item.ID);
+                lvi.SubItems.Add(item.Nome);
+                lvi.SubItems.Add(item.Telefone);
+                lvi.SubItems.Add(item.CPF);
+                lswListaClientes.Items.Add(lvi);
+            }
+        }
     }
 }
 
