@@ -292,13 +292,10 @@ namespace Projeto_Imoveis
 }/*/
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
-using System.Threading.Tasks; // Adicione esta linha para importar o namespace correto
+using System.Windows.Forms;
+using Newtonsoft.Json.Linq; // Adicione esta linha para importar o namespace correto
 
 namespace Projeto_Imoveis
 {
@@ -317,6 +314,7 @@ namespace Projeto_Imoveis
         public string Numero { get; set; }
         public string CEP { get; set; }
         public string EstadoCivil { get; set; }
+        public string Complemento { get; set; }
         public string DataDeNascimento { get; set; }
         public string Genero { get; set; }
         public string Imagem64 { get; set; }    
@@ -329,27 +327,26 @@ namespace Projeto_Imoveis
             List<Pessoas> pessoas = ListarTodos();
             try
             {
-                foreach (Pessoas p in pessoas)
+                foreach (Pessoas pessoa in pessoas)
                 {
-                    if (p.ID == obj.ID)
+                    if (pessoa.ID == obj.ID)
                     {
-                        p.ID = obj.ID;
-                        p.CPF = obj.CPF;
-                        p.Nome = obj.Nome;
-                        p.Telefone = obj.Telefone;
-                        p.Logradouro = obj.Logradouro;
-                        p.Numero = obj.Numero;
-                        p.Cidade = obj.Cidade;
-                        p.UF = obj.UF;
-                        p.CEP = obj.CEP;
-                        p.Bairro = obj.Bairro;
-                        p.DataDeNascimento = obj.DataDeNascimento;
-                        p.EstadoCivil = obj.EstadoCivil;
-                        p.Genero = obj.Genero;
+                        pessoa.ID = obj.ID;
+                        pessoa.CPF = obj.CPF;
+                        pessoa.Nome = obj.Nome;
+                        pessoa.Telefone = obj.Telefone;
+                        pessoa.Logradouro = obj.Logradouro;
+                        pessoa.Numero = obj.Numero;
+                        pessoa.Cidade = obj.Cidade;
+                        pessoa.UF = obj.UF;
+                        pessoa.CEP = obj.CEP;
+                        pessoa.Bairro = obj.Bairro;
+                        pessoa.DataDeNascimento = obj.DataDeNascimento;
+                        pessoa.EstadoCivil = obj.EstadoCivil;
+                        pessoa.Genero = obj.Genero;
+                        pessoa.Imagem64 = obj.Imagem64;
                     }
                 }
-
-
                 string jsonString = JsonConvert.SerializeObject(pessoas);
                 File.WriteAllText(arquivoPath, jsonString);
 
@@ -389,15 +386,20 @@ namespace Projeto_Imoveis
             try
             {
                 List<Pessoas> pessoas = ListarTodos();
-                var pessoa = pessoas.Find(p => p.ID == obj.ID);
-                if (pessoa != null)
+               var resultado = pessoas.Find(p => p.CPF == obj.CPF);
+                if (resultado == null)
                 {
-                    pessoas.Remove(pessoa);
-                    string jsonString = JsonConvert.SerializeObject(pessoas);
-                    File.WriteAllText(arquivoPath, jsonString);
+                    pessoas.Add(obj);
+                    var JsonString = JsonConvert.SerializeObject(pessoas);
+                    File.WriteAllText(arquivoPath, JsonString);
                     return true;
+
                 }
-                return false;
+                else
+                {
+                    MessageBox.Show("Cliente já cadastrado");
+                    return false;
+                }
             }
             catch (IOException)
             {
@@ -410,19 +412,41 @@ namespace Projeto_Imoveis
             try
             {
                 string json = File.ReadAllText(arquivoPath);
-                return JsonConvert.DeserializeObject<List<Pessoas>>(json);
+                JToken jToken = JToken.Parse(json);
+                if (jToken is JArray)
+                {
+                    return JsonConvert.DeserializeObject<List<Pessoas>>(json);
+                }
+                else
+                {
+                    Console.WriteLine($"O arquivo {arquivoPath} não contém um array de objetos JSON.");
+                    return new List<Pessoas>();
+                }
             }
             catch (IOException)
             {
+                Console.WriteLine($"Erro ao listar todas as pessoas");
+                return new List<Pessoas>();
+            }
+            catch(JsonReaderException)
+            {
+                Console.WriteLine($"Erro ao ler o JSON");
                 return new List<Pessoas>();
             }
 
         }
-
         public Pessoas ListarUm(string ID)
         {
-            List<Pessoas> pessoas = ListarTodos();
-            return pessoas.Find(p => p.ID == ID) ?? new Pessoas();
+            try
+            {
+                List<Pessoas> pessoas = ListarTodos();
+                return pessoas.Find(p => p.ID == ID) ?? new Pessoas();
+            }
+            catch (IOException)
+            {
+                Console.WriteLine($"Erro ao listar uma pessoa");
+                return new Pessoas();
+            }
         }
     }
 

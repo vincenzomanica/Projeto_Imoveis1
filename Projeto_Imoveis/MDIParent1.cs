@@ -106,11 +106,8 @@ namespace Projeto_Imoveis
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-           
-
-            frmCadastroPessoas cadastroPessoas = new frmCadastroPessoas();   
-
+        { 
+            frmCadastroPessoas cadastroPessoas = new frmCadastroPessoas();  
             cadastroPessoas.ShowDialog();  
 
         }

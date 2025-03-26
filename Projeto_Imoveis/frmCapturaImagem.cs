@@ -34,7 +34,7 @@ namespace Projeto_Imoveis
             videoSource.Start();
 
         }
-        private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        public void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             // Exibir a imagem capturada no PictureBox
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
