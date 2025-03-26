@@ -269,22 +269,22 @@ namespace Projeto_Imoveis
             }
             else if (!string.IsNullOrEmpty(txtLogradouro.Text) && !string.IsNullOrEmpty(cmbMunicipio.Text) && !string.IsNullOrEmpty(cmbUF.Text))
             {
-            //    List<CEP> ceps = new List<CEP> { cep };
-               List<CEP> ceps = await cep.PesquisaEnderecoAsync(txtLogradouro.Text);
+            //   List<CEP> ceps = new List<CEP> { cep };
+            //    ceps = await cep.PesquisaEnderecoAsync(txtLogradouro.Text);
                     
-                    foreach (CEP resultado in ceps)
-                    {
-                        if (resultado.Logradouro == txtLogradouro.Text)
-                        {
+            //        foreach (CEP resultado in ceps)
+            //        {
+            //            if (resultado.Logradouro == txtLogradouro.Text)
+            //            {
                           
-                        }
-                    }
+            //            }
+            //        }
             }
-            txtBairro.Text = resultado.Bairro;
-            txtLogradouro.Text = resultado.Logradouro;
-            txtComplemento.Text = resultado.Complemento;
-            cmbMunicipio.Text = resultado.Localidade;
-            cmbUF.Text = resultado.Uf;
+            //txtBairro.Text = resultado.Bairro;
+            //txtLogradouro.Text = resultado.Logradouro;
+            //txtComplemento.Text = resultado.Complemento;
+            //cmbMunicipio.Text = resultado.Localidade;
+            //cmbUF.Text = resultado.Uf;
         }
 
         private string SalvarFoto()
