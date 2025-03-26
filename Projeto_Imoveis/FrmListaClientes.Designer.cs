@@ -85,7 +85,7 @@
             this.btnAlterar.Name = "btnAlterar";
             this.btnAlterar.Size = new System.Drawing.Size(91, 42);
             this.btnAlterar.TabIndex = 5;
-            this.btnAlterar.Text = "Alterar";
+            this.btnAlterar.Text = "&Alterar";
             this.btnAlterar.UseVisualStyleBackColor = true;
             this.btnAlterar.Click += new System.EventHandler(this.btnAlterar_Click);
             // 
