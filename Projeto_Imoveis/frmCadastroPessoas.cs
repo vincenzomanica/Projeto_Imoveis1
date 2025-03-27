@@ -135,8 +135,7 @@ namespace Projeto_Imoveis
             // Adicionar evento para colunas
 
 
-            AdicionarCampos();
-            OrdemControles();
+
         }
 
         private void PreencherCampos(Pessoas pessoa)
@@ -269,8 +268,10 @@ namespace Projeto_Imoveis
                 txtComplemento.Text = resultado.Complemento;
                 cmbMunicipio.Text = resultado.Localidade;
                 cmbUF.Text = resultado.Uf;
+                txtNumero.Focus();
+
             }
-            else if (!string.IsNullOrEmpty(txtLogradouro.Text) && cmbUF.SelectedIndex == 0)
+            else if (!string.IsNullOrEmpty(txtLogradouro.Text) && !string.IsNullOrEmpty(cmbGenero.Text) && !string.IsNullOrEmpty(cmbMunicipio.Text))
             {
                 List<CEP> endereco = await cep.SearchByAddressAsync(cmbUF.Text, cmbMunicipio.Text, txtLogradouro.Text);
                 if (endereco.Count > 0)
@@ -284,9 +285,9 @@ namespace Projeto_Imoveis
                         listViewItem.SubItems.Add(item.Bairro);
                         listViewItem.SubItems.Add(item.Complemento);
                         lswListaCEP.Items.Add(listViewItem);
-                        
+
                     }
-                    txtNumero.Focus();
+
                 }
             }
         }
@@ -304,31 +305,16 @@ namespace Projeto_Imoveis
             }
             return string.Empty;
         }
-        private void AdicionarCampos()
-        {
-            txtNome.KeyDown += TextBox_KeyDown;
-            mtxtCPF.KeyDown += TextBox_KeyDown;
-            mtxtTelefone.KeyDown += TextBox_KeyDown;
-            cmbEstadoCivil.KeyDown += TextBox_KeyDown;
-            cmbGenero.KeyDown += TextBox_KeyDown;
-            dataTimePickerNascimento.KeyDown += TextBox_KeyDown;
-            btnCapturar.KeyDown += TextBox_KeyDown;
-            mtxtCEP.KeyDown += TextBox_KeyDown;
-            txtLogradouro.KeyDown += TextBox_KeyDown;
-            txtBairro.KeyDown += TextBox_KeyDown;
-            cmbUF.KeyDown += TextBox_KeyDown;
-            cmbMunicipio.KeyDown += TextBox_KeyDown;
-            txtNumero.KeyDown += TextBox_KeyDown;
-            txtComplemento.KeyDown += TextBox_KeyDown;
-        }
+
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
+            OrdemControles();
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
                 this.SelectNextControl((Control)sender, true, true, true, true);
-                SendKeys.Send("Tab");
+
             }
         }
         private void OrdemControles()
@@ -339,15 +325,16 @@ namespace Projeto_Imoveis
             cmbGenero.TabIndex = 3;
             cmbEstadoCivil.TabIndex = 4;
             dataTimePickerNascimento.TabIndex = 5;
-            btnCapturar.TabIndex = 6;
-            mtxtCEP.TabIndex = 7;
-            btnPesquisar.TabIndex = 8;
-            txtLogradouro.TabIndex = 9;
-            txtNumero.TabIndex = 10;
-            txtComplemento.TabIndex = 11;
-            txtBairro.TabIndex = 12;
-            cmbUF.TabIndex = 13;
-            cmbMunicipio.TabIndex = 14;
+            mtxtCEP.TabIndex = 6;
+            btnPesquisar.TabIndex = 7;
+            txtLogradouro.TabIndex = 8;
+            txtNumero.TabIndex = 9;
+            txtComplemento.TabIndex = 10;
+            txtBairro.TabIndex = 11;
+            cmbUF.TabIndex = 12;
+            cmbMunicipio.TabIndex = 13;
+            btnCapturar.TabIndex = 14;
+            btnSalvar.TabIndex = 15;
         }
 
         private void btnFechar_Click(object sender, EventArgs e)
@@ -355,7 +342,7 @@ namespace Projeto_Imoveis
             pnlListaCEP.Visible = false;
         }
 
-   
+
 
         private void lswListaCEP_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -365,10 +352,60 @@ namespace Projeto_Imoveis
                 mtxtCEP.Text = item.Text;
                 txtBairro.Text = item.SubItems[2].Text;
                 lswListaCEP.Items.Clear();
+                txtNumero.Focus();
                 btnFechar_Click(sender, e);
-               
+
+
             }
-            txtNumero.Focus();
+
+        }
+
+        private void cmbGenero_Leave(object sender, EventArgs e)
+        {
+            SendKeys.Send("{F4}");
+        }
+
+        private void cmbGenero_Enter(object sender, EventArgs e)
+        {
+            SendKeys.Send("{F4}");
+
+        }
+
+        private void dataTimePickerNascimento_KeyDown(object sender, KeyEventArgs e)
+        {
+            SendKeys.Send("{F4}");
+        }
+
+
+
+        private void cmbUF_Enter(object sender, EventArgs e)
+        {
+            SendKeys.Send("{F4}");
+            cmbMunicipio.Focus();
+        }
+
+        private void dataTimePickerNascimento_KeyDown_1(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                mtxtCEP.Focus();
+            }
+        }
+
+        private void mtxtCEP_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnPesquisar_Click(sender, e);
+            }
+        }
+
+        private void cmbMunicipio_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSalvar.Focus();
+            }
         }
     }
 }
