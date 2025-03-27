@@ -132,6 +132,8 @@ namespace Projeto_Imoveis
 
             // Selecionar o primeiro dispositivo de vídeo
             videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+            // Adicionar evento para colunas
+
 
             AdicionarCampos();
             OrdemControles();
@@ -256,35 +258,37 @@ namespace Projeto_Imoveis
 
         private async void btnPesquisar_Click(object sender, EventArgs e)
         {
-            CEP cep = new CEP();
+            ViaCepClient cep = new ViaCepClient();
             CEP resultado = new CEP();
+
             if (!string.IsNullOrEmpty(mtxtCEP.Text))
             {
-                resultado = await cep.PesquisaCepAsync(mtxtCEP.Text);
+                resultado = await cep.SearchAsync(mtxtCEP.Text);
                 txtBairro.Text = resultado.Bairro;
                 txtLogradouro.Text = resultado.Logradouro;
                 txtComplemento.Text = resultado.Complemento;
                 cmbMunicipio.Text = resultado.Localidade;
                 cmbUF.Text = resultado.Uf;
             }
-            else if (!string.IsNullOrEmpty(txtLogradouro.Text) && !string.IsNullOrEmpty(cmbMunicipio.Text) && !string.IsNullOrEmpty(cmbUF.Text))
+            else if (!string.IsNullOrEmpty(txtLogradouro.Text) && cmbUF.SelectedIndex == 0)
             {
-            //   List<CEP> ceps = new List<CEP> { cep };
-            //    ceps = await cep.PesquisaEnderecoAsync(txtLogradouro.Text);
-                    
-            //        foreach (CEP resultado in ceps)
-            //        {
-            //            if (resultado.Logradouro == txtLogradouro.Text)
-            //            {
-                          
-            //            }
-            //        }
+                List<CEP> endereco = await cep.SearchByAddressAsync(cmbUF.Text, cmbMunicipio.Text, txtLogradouro.Text);
+                if (endereco.Count > 0)
+                {
+                    pnlListaCEP.Visible = true;
+
+                    foreach (CEP item in endereco)
+                    {
+                        ListViewItem listViewItem = new ListViewItem(item.Cep);
+                        listViewItem.SubItems.Add(item.Logradouro);
+                        listViewItem.SubItems.Add(item.Bairro);
+                        listViewItem.SubItems.Add(item.Complemento);
+                        lswListaCEP.Items.Add(listViewItem);
+                        
+                    }
+                    txtNumero.Focus();
+                }
             }
-            //txtBairro.Text = resultado.Bairro;
-            //txtLogradouro.Text = resultado.Logradouro;
-            //txtComplemento.Text = resultado.Complemento;
-            //cmbMunicipio.Text = resultado.Localidade;
-            //cmbUF.Text = resultado.Uf;
         }
 
         private string SalvarFoto()
@@ -306,12 +310,12 @@ namespace Projeto_Imoveis
             mtxtCPF.KeyDown += TextBox_KeyDown;
             mtxtTelefone.KeyDown += TextBox_KeyDown;
             cmbEstadoCivil.KeyDown += TextBox_KeyDown;
-            cmbGenero.KeyDown += TextBox_KeyDown; 
+            cmbGenero.KeyDown += TextBox_KeyDown;
             dataTimePickerNascimento.KeyDown += TextBox_KeyDown;
             btnCapturar.KeyDown += TextBox_KeyDown;
-            mtxtCEP.KeyDown +=  TextBox_KeyDown;
+            mtxtCEP.KeyDown += TextBox_KeyDown;
             txtLogradouro.KeyDown += TextBox_KeyDown;
-            txtBairro.KeyDown +=TextBox_KeyDown;
+            txtBairro.KeyDown += TextBox_KeyDown;
             cmbUF.KeyDown += TextBox_KeyDown;
             cmbMunicipio.KeyDown += TextBox_KeyDown;
             txtNumero.KeyDown += TextBox_KeyDown;
@@ -322,12 +326,12 @@ namespace Projeto_Imoveis
         {
             if (e.KeyCode == Keys.Enter)
             {
-               e.SuppressKeyPress = true;
+                e.SuppressKeyPress = true;
                 this.SelectNextControl((Control)sender, true, true, true, true);
                 SendKeys.Send("Tab");
             }
-        } 
-     private void OrdemControles()
+        }
+        private void OrdemControles()
         {
             txtNome.TabIndex = 0;
             mtxtTelefone.TabIndex = 1;
@@ -344,6 +348,27 @@ namespace Projeto_Imoveis
             txtBairro.TabIndex = 12;
             cmbUF.TabIndex = 13;
             cmbMunicipio.TabIndex = 14;
+        }
+
+        private void btnFechar_Click(object sender, EventArgs e)
+        {
+            pnlListaCEP.Visible = false;
+        }
+
+   
+
+        private void lswListaCEP_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListViewItem item = lswListaCEP.SelectedItems[0];
+            if (item != null)
+            {
+                mtxtCEP.Text = item.Text;
+                txtBairro.Text = item.SubItems[2].Text;
+                lswListaCEP.Items.Clear();
+                btnFechar_Click(sender, e);
+               
+            }
+            txtNumero.Focus();
         }
     }
 }
