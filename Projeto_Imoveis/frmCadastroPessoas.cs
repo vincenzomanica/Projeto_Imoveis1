@@ -1,86 +1,4 @@
-﻿/*using AForge.Video.DirectShow;
-using AForge.Video;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Projeto_Imoveis
-{
-    public partial class frmCadastroPessoas : Form
-    {
-        private Pessoas p = new Pessoas();
-        private FilterInfoCollection videoDevices;
-        // Dispositivo de captura selecionado
-        private VideoCaptureDevice videoSource;
-
-        private int lastGenerateID = 1;
-        public frmCadastroPessoas()
-        {
-            InitializeComponent();
-
-
-
-
-            //Combo Box Opções
-            cmbEstadoCivil.Items.Add("Solteiro(a)");
-            cmbEstadoCivil.Items.Add("Casado(a)");
-            cmbEstadoCivil.Items.Add("Viuvo(a)");
-        }
-
-
-
-        private void btnSalvar_Click(object sender, EventArgs e)
-        {
-            Pessoas pessoa = new Pessoas();
-
-            pessoa.Nome = txtNome.Text;
-            pessoa.Telefone = txtTelefone.Text;
-            pessoa.CEP = txtCEP.Text;
-            pessoa.CPF = txtCPF.Text;
-            pessoa.Numero = txtNumero.Text;
-            pessoa.Logradouro = txtLogradouro.Text;
-            pessoa.UF = cmbUF.Text;
-            pessoa.Cidade = cmbMunicipio.Text;
-            pessoa.ID = txtID.Text;
-            pessoa.DataDeNascimento = dataTimePickerNascimento.Text;
-            pessoa.EstadoCivil = cmbEstadoCivil.Text;
-            pessoa.Genero = cmbGenero.Text;
-
-            //Incluir pessoa a Lista
-            bool Inserir = p.inserir(pessoa);
-            if (Inserir == true)
-                MessageBox.Show("Pessoa Inserida com sucesso");
-
-
-
-        }
-
-        private void btnCapturar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
-
-        private void btnLimpar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-    }
-}
-/*/
+﻿
 using AForge.Video.DirectShow;
 using AForge.Video;
 using System;
@@ -107,10 +25,16 @@ namespace Projeto_Imoveis
         private FilterInfoCollection videoDevices;
         private VideoCaptureDevice videoSource;
 
+
+        private readonly IBGEApiService _ibgeApiService;
+
+        private readonly frmCapturaImagem _frmCapturaImagem;
         public frmCadastroPessoas()
         {
             InitializeComponent();
             InicializarComponentes();
+            _ibgeApiService = new IBGEApiService();
+            _frmCapturaImagem = new frmCapturaImagem();
         }
 
         public frmCadastroPessoas(Pessoas pessoa)
@@ -118,6 +42,8 @@ namespace Projeto_Imoveis
             InitializeComponent();
             InicializarComponentes();
             PreencherCampos(pessoa);
+            _ibgeApiService = new IBGEApiService();
+            _frmCapturaImagem = new frmCapturaImagem();
         }
 
         private void InicializarComponentes()
@@ -133,9 +59,6 @@ namespace Projeto_Imoveis
             // Selecionar o primeiro dispositivo de vídeo
             videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
             // Adicionar evento para colunas
-
-
-
         }
 
         private void PreencherCampos(Pessoas pessoa)
@@ -271,7 +194,7 @@ namespace Projeto_Imoveis
                 txtNumero.Focus();
 
             }
-            else if (!string.IsNullOrEmpty(txtLogradouro.Text) && !string.IsNullOrEmpty(cmbGenero.Text) && !string.IsNullOrEmpty(cmbMunicipio.Text))
+            else if (!string.IsNullOrEmpty(txtLogradouro.Text) && !string.IsNullOrEmpty(cmbUF.Text) && !string.IsNullOrEmpty(cmbMunicipio.Text))
             {
                 List<CEP> endereco = await cep.SearchByAddressAsync(cmbUF.Text, cmbMunicipio.Text, txtLogradouro.Text);
                 if (endereco.Count > 0)
@@ -287,11 +210,14 @@ namespace Projeto_Imoveis
                         lswListaCEP.Items.Add(listViewItem);
 
                     }
-
+                }
+                else
+                {
+                    MessageBox.Show("Endereço não encontrado");
                 }
             }
         }
-
+        
         private string SalvarFoto()
         {
             if (pctBoxCliente != null)
@@ -306,83 +232,11 @@ namespace Projeto_Imoveis
             return string.Empty;
         }
 
-
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            OrdemControles();
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                this.SelectNextControl((Control)sender, true, true, true, true);
-
-            }
-        }
-        private void OrdemControles()
-        {
-            txtNome.TabIndex = 0;
-            mtxtTelefone.TabIndex = 1;
-            mtxtCPF.TabIndex = 2;
-            cmbGenero.TabIndex = 3;
-            cmbEstadoCivil.TabIndex = 4;
-            dataTimePickerNascimento.TabIndex = 5;
-            mtxtCEP.TabIndex = 6;
-            btnPesquisar.TabIndex = 7;
-            txtLogradouro.TabIndex = 8;
-            txtNumero.TabIndex = 9;
-            txtComplemento.TabIndex = 10;
-            txtBairro.TabIndex = 11;
-            cmbUF.TabIndex = 12;
-            cmbMunicipio.TabIndex = 13;
-            btnCapturar.TabIndex = 14;
-            btnSalvar.TabIndex = 15;
-        }
-
         private void btnFechar_Click(object sender, EventArgs e)
         {
             pnlListaCEP.Visible = false;
         }
 
-
-
-        private void lswListaCEP_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ListViewItem item = lswListaCEP.SelectedItems[0];
-            if (item != null)
-            {
-                mtxtCEP.Text = item.Text;
-                txtBairro.Text = item.SubItems[2].Text;
-                lswListaCEP.Items.Clear();
-                txtNumero.Focus();
-                btnFechar_Click(sender, e);
-
-
-            }
-
-        }
-
-        private void cmbGenero_Leave(object sender, EventArgs e)
-        {
-            SendKeys.Send("{F4}");
-        }
-
-        private void cmbGenero_Enter(object sender, EventArgs e)
-        {
-            SendKeys.Send("{F4}");
-
-        }
-
-        private void dataTimePickerNascimento_KeyDown(object sender, KeyEventArgs e)
-        {
-            SendKeys.Send("{F4}");
-        }
-
-
-
-        private void cmbUF_Enter(object sender, EventArgs e)
-        {
-            SendKeys.Send("{F4}");
-            cmbMunicipio.Focus();
-        }
 
         private void dataTimePickerNascimento_KeyDown_1(object sender, KeyEventArgs e)
         {
@@ -396,16 +250,183 @@ namespace Projeto_Imoveis
         {
             if (e.KeyCode == Keys.Enter)
             {
-                btnPesquisar_Click(sender, e);
+                if(mtxtCEP.Text.Length > 0)
+                {
+                    btnPesquisar.PerformClick();
+                }
+                else
+                {
+                    txtLogradouro.Focus();
+                }
             }
         }
 
+
+
+        private void txtLogradouro_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (mtxtCEP.Text.Length == 0 && cmbUF.Text.Length > 0 && cmbMunicipio.Text.Length > 0 && txtLogradouro.Text.Length > 0)
+                {
+                    btnPesquisar.PerformClick();
+                }
+                else if(!string.IsNullOrEmpty(mtxtCEP.Text) && cmbUF.Text.Length > 0 && cmbMunicipio.Text.Length > 0 && txtLogradouro.Text.Length > 0) {
+                    txtNumero.Focus();
+                }
+                else
+                {
+                    cmbUF.Focus();
+                }
+            }
+        }
         private void cmbMunicipio_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                btnSalvar.Focus();
+                if(mtxtCEP.Text.Length == 0 && cmbUF.Text.Length > 0 && cmbMunicipio.Text.Length > 0 && txtLogradouro.Text.Length > 0)
+                {
+                    btnPesquisar.PerformClick();
+                }
+                else if (!string.IsNullOrEmpty(mtxtCEP.Text) && cmbUF.Text.Length > 0 && cmbMunicipio.Text.Length > 0 && txtLogradouro.Text.Length > 0)
+                {
+                    btnCapturar.Focus();
+                }     
             }
         }
+
+        private void dataTimePickerNascimento_Leave(object sender, EventArgs e)
+        {
+            SendKeys.Send("{F4}");
+        }
+
+        private void lswListaCEP_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListViewItem item = lswListaCEP.SelectedItems[0]; // Pega o item selecionado
+
+            mtxtCEP.Text = item.Text; // Preenche o campo CEP
+            txtLogradouro.Text = item.SubItems[1].Text; // Preenche o campo Logradouro
+            txtBairro.Text = item.SubItems[2].Text; // Preench3e o campo Bairro
+            txtNumero.Focus(); // Foca no campo Número
+            pnlListaCEP.Visible = false;  // Esconde o painel de listagem de CEPs
+        }
+
+
+        private void cmb_Leave(object sender, EventArgs e)
+        {
+            SendKeys.Send("{F4}");
+        }
+        private void cmb_Enter(object sender, EventArgs e)
+        {
+            SendKeys.Send("{F4}");
+        }
+
+        private void dataTimePickerNascimento_Enter(object sender, EventArgs e)
+        {
+            SendKeys.Send("{F4}");
+        }
+
+        private void btnCapturar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (_frmCapturaImagem.ShowDialog() == DialogResult.OK && pctBoxCliente != null)
+                {
+                    btnSalvar.Focus();
+                }
+            }
+        }
+
+        private void cmbUF_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                cmbMunicipio.Focus();
+            }   
+        }
+
+       
+
+        private async Task CarregarEstados()
+        {
+            try
+            {
+                List<Estado> estados = await _ibgeApiService.GetEstadosAsync();
+
+                cmbUF.DataSource = estados;
+                cmbUF.DisplayMember = "Sigla";
+                cmbUF.ValueMember = "Sigla";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar estados: " + ex.Message);
+            }
+        }
+
+        private async void cmbUF_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string ufSelecionada = cmbUF.SelectedValue?.ToString();
+            if (!string.IsNullOrEmpty(ufSelecionada))
+            {
+                await CarregarMunicipios( ufSelecionada);
+            }
+        }
+        private async Task CarregarMunicipios(string ufSigla)
+        {
+            try
+            {
+                List<Municipio> municipios = await _ibgeApiService.GetMuncipioPorEstadoAsync(ufSigla);
+                cmbMunicipio.DataSource = municipios;
+                cmbMunicipio.DisplayMember = "Nome";
+                cmbMunicipio.ValueMember = "Nome";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar municípios: " + ex.Message);
+            }
+        }
+
+        private void cmbEstadoCivil_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                dataTimePickerNascimento.Focus();
+            }
+        }
+
+        private void txtNome_KeyDown(object sender, KeyEventArgs e)
+        {
+            mtxtTelefone.Focus();
+        }
+
+        private void mtxtTelefone_KeyDown(object sender, KeyEventArgs e)
+        {
+            mtxtCPF.Focus();
+        }
+
+        private void mtxtCPF_KeyDown(object sender, KeyEventArgs e)
+        {
+            cmbGenero.Focus();
+        }
+
+        private void cmbGenero_KeyDown(object sender, KeyEventArgs e)
+        {
+            cmbEstadoCivil.Focus();
+        }
+
+        private void txtNumero_KeyDown(object sender, KeyEventArgs e)
+        {
+            txtComplemento.Focus();
+        }
+
+        private void txtComplemento_KeyDown(object sender, KeyEventArgs e)
+        {
+            txtBairro.Focus();
+        }
+
+        private void frmCadastroPessoas_Load(object sender, EventArgs e)
+        {
+            CarregarEstados();
+        }
     }
-}
+} 

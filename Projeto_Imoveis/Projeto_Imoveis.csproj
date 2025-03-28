@@ -99,7 +99,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseAPI.cs" />
     <Compile Include="CEP.cs" />
+    <Compile Include="APIServiceBase.cs" />
     <Compile Include="frmCapturaImagem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +120,7 @@
     <Compile Include="frmCadastroPessoas.Designer.cs">
       <DependentUpon>frmCadastroPessoas.cs</DependentUpon>
     </Compile>
+    <Compile Include="IBGEApiService.cs" />
     <Compile Include="IViaCepClient.cs" />
     <Compile Include="MDIParent1.cs">
       <SubType>Form</SubType>
