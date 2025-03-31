@@ -17,10 +17,13 @@ namespace Projeto_Imoveis
         private FilterInfoCollection videoDevices;
         private VideoCaptureDevice videoSource;
         public Bitmap CapturedImage { get; private set; }
+
         public frmCapturaImagem()
         {
             InitializeComponent();
 
+            // Configura o PictureBox para ajustar a imagem
+            pctBoxCaptura.SizeMode = PictureBoxSizeMode.StretchImage;
 
             videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             if (videoDevices.Count == 0)
@@ -28,41 +31,91 @@ namespace Projeto_Imoveis
                 MessageBox.Show("Nenhum dispositivo de vídeo encontrado.");
                 return;
             }
-            //Selecionar primeiro dispositivo de video
-            videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
-            videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-            videoSource.Start();
 
+            try
+            {
+                videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+                videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+                videoSource.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao iniciar o dispositivo de vídeo: " + ex.Message);
+            }
         }
+
         public void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            // Exibir a imagem capturada no PictureBox
-            Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
-            pctBoxCaptura.Image = bitmap;
+            try
+            {
+                using (Bitmap frame = (Bitmap)eventArgs.Frame.Clone())
+                {
+                    if (pctBoxCaptura.InvokeRequired)
+                    {
+                        pctBoxCaptura.Invoke(new Action(() =>
+                        {
+                            UpdatePictureBox(frame);
+                        }));
+                    }
+                    else
+                    {
+                        UpdatePictureBox(frame);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Em ambiente de debug, escreva o erro para monitoramento
+                System.Diagnostics.Debug.WriteLine("Erro no NewFrame: " + ex.Message);
+            }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void UpdatePictureBox(Bitmap frame)
         {
-
+            if (pctBoxCaptura.Image != null)
+            {
+                pctBoxCaptura.Image.Dispose();
+            }
+            // Cria uma cópia para manter o frame atual
+            pctBoxCaptura.Image = (Bitmap)frame.Clone();
         }
+
         private void btnCapturar_Click(object sender, EventArgs e)
         {
             if (pctBoxCaptura.Image != null)
             {
                 CapturedImage = (Bitmap)pctBoxCaptura.Image.Clone();
                 this.DialogResult = DialogResult.OK;
+                DisposeVideoSource();
                 this.Close();
-                MessageBox.Show("Imagem capturada com sucesso!");
             }
             else
             {
                 MessageBox.Show("Nenhuma imagem capturada!");
             }
         }
+
         private void frmCapturaImagem_FormClosing(object sender, FormClosingEventArgs e)
         {
-            videoSource.SignalToStop();
-            videoSource.WaitForStop();
+            DisposeVideoSource();
+        }
+
+        private void DisposeVideoSource()
+        {
+            try
+            {
+                if (videoSource != null && videoSource.IsRunning)
+                {
+                    videoSource.SignalToStop();
+                    videoSource.WaitForStop();
+                    videoSource.NewFrame -= new NewFrameEventHandler(video_NewFrame);
+                    videoSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao finalizar o dispositivo de vídeo: " + ex.Message);
+            }
         }
     }
 }

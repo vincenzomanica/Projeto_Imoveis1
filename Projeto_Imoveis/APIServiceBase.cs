@@ -28,15 +28,19 @@ namespace Projeto_Imoveis
                 string url = $"{BaseUrl}{endpoint}";
                 HttpResponseMessage response = await _httpClient.GetAsync(url); //Faz uma requisição GET para a URL especificada
 
+                //Verifica se a requisição foi bem sucedida
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadAsStringAsync(); //Retorna o conteúdo da resposta como string
                 }
+
+                //Se a requisição não foi bem sucedida
                 else
                 {
                     throw new Exception($"Erro ao chamar a API: {response.StatusCode}"); //Exibe uma mensagem de erro
                 }
             }
+            //Trata exceções
             catch (Exception ex)
             {
                 Console.WriteLine($"Erro no GET: {ex.Message}");    //Exibe uma mensagem de erro
