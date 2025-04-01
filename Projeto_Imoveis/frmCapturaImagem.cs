@@ -47,7 +47,25 @@ namespace Projeto_Imoveis
                 btnCapturar.Enabled = false;
             }
         }
+        private void IniciarVideo(string monikerString)
+        {
+            try
+            {
+                DisposeVideoSource();
 
+                videoSource = new VideoCaptureDevice(monikerString);
+                newFrameHandler = new NewFrameEventHandler(video_NewFrame);
+                videoSource.NewFrame += newFrameHandler;
+                videoSource.Start();
+
+                btnCapturar.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao iniciar o dispositivo de vídeo: " + ex.Message);
+                btnCapturar.Enabled = false;
+            }
+        }
         public void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             try
@@ -56,10 +74,7 @@ namespace Projeto_Imoveis
                 {
                     if (pctBoxCaptura.InvokeRequired)
                     {
-                        pctBoxCaptura.Invoke(new Action(() =>
-                        {
-                            UpdatePictureBox(frame);
-                        }));
+                        pctBoxCaptura.Invoke(new Action(() => UpdatePictureBox(frame)));
                     }
                     else
                     {
@@ -88,10 +103,16 @@ namespace Projeto_Imoveis
             if (pctBoxCaptura.Image != null)
             {
                 CapturedImage = (Bitmap)pctBoxCaptura.Image.Clone();
-                string fileName = "captura_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpg";
-                CapturedImage.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
-                this.DialogResult = DialogResult.OK;
+                try {
+                    string fileName = "captura_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".jpg";
+                    CapturedImage.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao salvar a imagem capturada: " + ex.Message);
+                }
                 DisposeVideoSource();
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             else
@@ -111,18 +132,18 @@ namespace Projeto_Imoveis
             {
                 if (videoSource != null && videoSource.IsRunning)
                 {
+                    videoSource.NewFrame -= video_NewFrame;
                     videoSource.SignalToStop();
                     videoSource.WaitForStop();
-                    if (newFrameHandler != null)
-                    {
-                        videoSource.NewFrame -= newFrameHandler;
-                    }
-                    videoSource = null;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao finalizar o dispositivo de vídeo: " + ex.Message);
+            }
+            finally
+            {
+                videoSource = null;
             }
         }
 
@@ -137,13 +158,8 @@ namespace Projeto_Imoveis
             {
                 try
                 {
-                    DisposeVideoSource();
-                    videoSource = new VideoCaptureDevice(cmbDispositivos.SelectedValue.ToString());
-                    newFrameHandler = new NewFrameEventHandler(video_NewFrame);
-                    videoSource.NewFrame += newFrameHandler;
-                    videoSource.Start();
-
-                    btnCapturar.Enabled = true;
+                    IniciarVideo(cmbDispositivos.SelectedValue.ToString());
+                    btnCapturar.Focus();
                 }
                 catch (Exception ex)
                 {

@@ -23,8 +23,7 @@ namespace Projeto_Imoveis
     public partial class frmCadastroPessoas : Form
     {
         private Pessoas obj = new Pessoas();
-        private FilterInfoCollection videoDevices;
-        private VideoCaptureDevice videoSource;
+      
 
         private readonly List<Control> _ordemDeNavegacao;
         private readonly IBGEApiService _ibgeApiService;
@@ -356,6 +355,7 @@ namespace Projeto_Imoveis
 
         private async void cmbUF_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             string ufSelecionada = cmbUF.SelectedValue?.ToString();
             if (!string.IsNullOrEmpty(ufSelecionada))
             {
