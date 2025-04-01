@@ -295,7 +295,8 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq; // Adicione esta linha para importar o namespace correto
+using Newtonsoft.Json.Linq;
+using System.Runtime.Remoting.Messaging; // Adicione esta linha para importar o namespace correto
 
 namespace Projeto_Imoveis
 {
@@ -401,8 +402,9 @@ namespace Projeto_Imoveis
                     return false;
                 }
             }
-            catch (IOException)
+            catch (Exception ex)
             {
+                MessageBox.Show($"Erro ao inserir pessoa: {ex.Message}");
                 return false;
             }
         }
@@ -411,6 +413,10 @@ namespace Projeto_Imoveis
         {
             try
             {
+                if (!File.Exists(arquivoPath))
+                {
+                    File.WriteAllText(arquivoPath, "[]");
+                }
                 string json = File.ReadAllText(arquivoPath);
                 JToken jToken = JToken.Parse(json);
                 if (jToken is JArray)

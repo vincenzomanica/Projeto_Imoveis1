@@ -139,6 +139,8 @@ namespace Projeto_Imoveis
                     CEP = mtxtCEP.Text,
                     CPF = mtxtCPF.Text,
                     Numero = txtNumero.Text,
+                    Complemento = txtComplemento.Text,
+                    Bairro = txtBairro.Text,
                     Logradouro = txtLogradouro.Text,
                     UF = cmbUF.Text,
                     Cidade = cmbMunicipio.Text,
@@ -152,7 +154,38 @@ namespace Projeto_Imoveis
                 {
                     RandomID();
                     pessoa.ID = txtID.Text;
+                    if (string.IsNullOrEmpty(txtNome.Text)
+                        || string.IsNullOrEmpty(mtxtCPF.Text)
+                        || string.IsNullOrEmpty(mtxtTelefone.Text)
+                        || string.IsNullOrEmpty(cmbGenero.Text)
+                        || string.IsNullOrEmpty(cmbEstadoCivil.Text)
+                        || string.IsNullOrEmpty(dataTimePickerNascimento.Text))
+                    {
+                        MessageBox.Show("Todos os campos dos Dados Pessoais são obrigatórios!");
+                        return;
+                    }
+                    else if (SalvarFoto().Length <= 0)
+                    {
+                        MessageBox.Show("Imagem é obrigatório");
+                        return;
+                    }
+                    else if (string.IsNullOrEmpty(mtxtCEP.Text) ||
+                        string.IsNullOrEmpty(txtLogradouro.Text) ||
+                        string.IsNullOrEmpty(txtNumero.Text) ||
+                        string.IsNullOrEmpty(cmbMunicipio.Text) ||
+                        string.IsNullOrEmpty(cmbUF.Text) ||
+                        string.IsNullOrEmpty(txtBairro.Text) ||
+                        string.IsNullOrEmpty(txtComplemento.Text))
+                    {
+                        MessageBox.Show("Todos os campos do Endereço é obrigatório");
+                        return;
+                    }
+
+
                     bool Inserir = obj.inserir(pessoa);
+
+
+
                     if (Inserir)
                     {
                         MessageBox.Show("Pessoa Inserida com sucesso");
@@ -347,13 +380,21 @@ namespace Projeto_Imoveis
 
         private async void frmCadastroPessoas_Load(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtID.Text))
+            try
             {
-                await CarregarEstados();
-                cmbUF.SelectedValue = "RS";
-                await CarregarMunicipios(cmbUF.Text);
-                cmbMunicipio.SelectedValue = "Porto Alegre";
+                if (string.IsNullOrEmpty(txtID.Text))
+                {
+                    await CarregarEstados();
+                    cmbUF.SelectedValue = "RS";
+                    await CarregarMunicipios(cmbUF.Text);
+                    cmbMunicipio.SelectedValue = "Porto Alegre";
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar dados: {ex.Message}");
+            }
+
         }
     }
     public static class ControlExtensions
