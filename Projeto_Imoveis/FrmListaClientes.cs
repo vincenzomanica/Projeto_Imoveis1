@@ -28,6 +28,7 @@ namespace Projeto_Imoveis
             lswListaClientes.Columns.Add("Nome", 100, HorizontalAlignment.Left);
             lswListaClientes.Columns.Add("Telefone", 100, HorizontalAlignment.Left);
             lswListaClientes.Columns.Add("CPF", 100, HorizontalAlignment.Left);
+            lswListaClientes.Columns.Add("CEP", 100, HorizontalAlignment.Left);
             CarregarListaClientes();
 
         }
@@ -42,6 +43,7 @@ namespace Projeto_Imoveis
                 lvi.SubItems.Add(item.Nome);
                 lvi.SubItems.Add(item.Telefone);
                 lvi.SubItems.Add(item.CPF);
+                lvi.SubItems.Add(item.CEP);
                 lswListaClientes.Items.Add(lvi);
             }
         }
@@ -142,6 +144,11 @@ namespace Projeto_Imoveis
                     CarregarListaClientes();
                 }
             }
+        }
+
+        private void lswListaClientes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnAlterar.PerformClick();
         }
     }
 }

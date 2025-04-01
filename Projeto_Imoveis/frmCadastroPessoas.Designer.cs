@@ -40,13 +40,11 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.dataTimePickerNascimento = new System.Windows.Forms.DateTimePicker();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnCapturar = new System.Windows.Forms.Button();
-            this.pctBoxCliente = new System.Windows.Forms.PictureBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtNome = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.pnlListaCEP = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.btnFechar = new System.Windows.Forms.Button();
@@ -55,6 +53,8 @@
             this.Logradouro = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Bairro = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Numero = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnCapturar = new System.Windows.Forms.Button();
+            this.pctBoxCliente = new System.Windows.Forms.PictureBox();
             this.btnSalvar = new System.Windows.Forms.Button();
             this.btnLimpar = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
@@ -76,8 +76,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.grpDadosPessoais.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pctBoxCliente)).BeginInit();
             this.pnlListaCEP.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pctBoxCliente)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -216,38 +216,6 @@
             this.dataTimePickerNascimento.Size = new System.Drawing.Size(81, 20);
             this.dataTimePickerNascimento.TabIndex = 16;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.pnlListaCEP);
-            this.groupBox2.Controls.Add(this.btnCapturar);
-            this.groupBox2.Controls.Add(this.pctBoxCliente);
-            this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.groupBox2.Location = new System.Drawing.Point(440, 37);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(400, 277);
-            this.groupBox2.TabIndex = 13;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Imagem";
-            // 
-            // btnCapturar
-            // 
-            this.btnCapturar.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.btnCapturar.Location = new System.Drawing.Point(6, 234);
-            this.btnCapturar.Name = "btnCapturar";
-            this.btnCapturar.Size = new System.Drawing.Size(83, 37);
-            this.btnCapturar.TabIndex = 15;
-            this.btnCapturar.Text = "CAPTURAR";
-            this.btnCapturar.UseVisualStyleBackColor = false;
-            this.btnCapturar.Click += new System.EventHandler(this.btnCapturar_Click);
-            // 
-            // pctBoxCliente
-            // 
-            this.pctBoxCliente.Location = new System.Drawing.Point(6, 19);
-            this.pctBoxCliente.Name = "pctBoxCliente";
-            this.pctBoxCliente.Size = new System.Drawing.Size(388, 209);
-            this.pctBoxCliente.TabIndex = 0;
-            this.pctBoxCliente.TabStop = false;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -285,6 +253,19 @@
             this.txtNome.Name = "txtNome";
             this.txtNome.Size = new System.Drawing.Size(161, 22);
             this.txtNome.TabIndex = 4;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.pnlListaCEP);
+            this.groupBox2.Controls.Add(this.btnCapturar);
+            this.groupBox2.Controls.Add(this.pctBoxCliente);
+            this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.groupBox2.Location = new System.Drawing.Point(440, 37);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(400, 277);
+            this.groupBox2.TabIndex = 13;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Imagem";
             // 
             // pnlListaCEP
             // 
@@ -361,6 +342,25 @@
             // 
             this.Numero.Text = "Numero";
             this.Numero.Width = 100;
+            // 
+            // btnCapturar
+            // 
+            this.btnCapturar.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.btnCapturar.Location = new System.Drawing.Point(6, 234);
+            this.btnCapturar.Name = "btnCapturar";
+            this.btnCapturar.Size = new System.Drawing.Size(83, 37);
+            this.btnCapturar.TabIndex = 15;
+            this.btnCapturar.Text = "CAPTURAR";
+            this.btnCapturar.UseVisualStyleBackColor = false;
+            this.btnCapturar.Click += new System.EventHandler(this.btnCapturar_Click);
+            // 
+            // pctBoxCliente
+            // 
+            this.pctBoxCliente.Location = new System.Drawing.Point(6, 19);
+            this.pctBoxCliente.Name = "pctBoxCliente";
+            this.pctBoxCliente.Size = new System.Drawing.Size(388, 209);
+            this.pctBoxCliente.TabIndex = 0;
+            this.pctBoxCliente.TabStop = false;
             // 
             // btnSalvar
             // 
@@ -445,6 +445,7 @@
             this.cmbUF.Size = new System.Drawing.Size(41, 21);
             this.cmbUF.TabIndex = 13;
             this.cmbUF.SelectedIndexChanged += new System.EventHandler(this.cmbUF_SelectedIndexChanged);
+            this.cmbUF.SelectionChangeCommitted += new System.EventHandler(this.cmbUF_SelectionChangeCommitted);
             // 
             // cmbMunicipio
             // 
@@ -585,9 +586,9 @@
             this.grpDadosPessoais.ResumeLayout(false);
             this.grpDadosPessoais.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pctBoxCliente)).EndInit();
             this.pnlListaCEP.ResumeLayout(false);
             this.pnlListaCEP.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pctBoxCliente)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

@@ -134,7 +134,18 @@ namespace Projeto_Imoveis
                 {
                     videoSource.NewFrame -= video_NewFrame;
                     videoSource.SignalToStop();
-                    videoSource.WaitForStop();
+
+                    int waitTime = 0;
+                    int timeout = 1000;
+                    while (videoSource.IsRunning && waitTime < timeout)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                        waitTime += 100;
+                    }
+                    if (videoSource.IsRunning)
+                    {
+                            MessageBox.Show("O dispositivo de vídeo não foi finalizado corretamente.");
+                    }
                 }
             }
             catch (Exception ex)

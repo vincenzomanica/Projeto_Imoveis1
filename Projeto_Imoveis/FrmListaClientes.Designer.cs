@@ -57,6 +57,7 @@
             this.lswListaClientes.Size = new System.Drawing.Size(529, 266);
             this.lswListaClientes.TabIndex = 0;
             this.lswListaClientes.UseCompatibleStateImageBehavior = false;
+            this.lswListaClientes.DoubleClick += new System.EventHandler(this.btnAlterar_Click);
             // 
             // txtPesquisar
             // 

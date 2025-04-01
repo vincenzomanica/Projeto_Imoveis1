@@ -23,43 +23,17 @@ namespace Projeto_Imoveis
     public partial class frmCadastroPessoas : Form
     {
         private Pessoas obj = new Pessoas();
-      
+        Pessoas objPessoa = new Pessoas();
 
-        private readonly List<Control> _ordemDeNavegacao;
-        private readonly IBGEApiService _ibgeApiService;
+        List<Control> _ordemDeNavegacao;
+        IBGEApiService _ibgeApiService;
 
         public frmCadastroPessoas(Pessoas pessoa = null)
         {
             InitializeComponent();
-            _ibgeApiService = new IBGEApiService();
-
-            if (pessoa != null)
-            {
-                PreencherCampos(pessoa);
-            }
-            _ordemDeNavegacao = new List<Control>
-                {
-                    txtNome,
-                    mtxtTelefone,
-                    mtxtCPF,
-                    cmbGenero,
-                    cmbEstadoCivil,
-                    dataTimePickerNascimento,
-                    mtxtCEP,
-                    cmbUF,
-                    cmbMunicipio,
-                    txtLogradouro,
-                    txtBairro,
-                    txtNumero,
-                    txtComplemento,
-                    btnCapturar,
-                    btnSalvar,
-                    btnLimpar
-                };
-            foreach (Control ctrl in _ordemDeNavegacao)
-            {
-                ctrl.KeyDown += Ctrl_KeyDown;
-            }
+            
+            this.objPessoa = pessoa;
+            
         }
 
         private void Ctrl_KeyDown(object sender, KeyEventArgs e)
@@ -97,7 +71,7 @@ namespace Projeto_Imoveis
             }
         }
 
-        private void PreencherCampos(Pessoas pessoa)
+        private async Task PreencherCampos(Pessoas pessoa)
         {
             if (!string.IsNullOrEmpty(pessoa.ID))
             {
@@ -111,9 +85,11 @@ namespace Projeto_Imoveis
                 mtxtCEP.Text = pessoa.CEP;
                 txtLogradouro.Text = pessoa.Logradouro;
                 txtNumero.Text = pessoa.Numero;
+                txtBairro.Text = pessoa.Bairro;
                 txtComplemento.Text = pessoa.Complemento;
-                cmbMunicipio.Text = pessoa.Cidade;
-                cmbUF.Text = pessoa.UF;
+                cmbUF.SelectedValue = pessoa.UF;
+                await CarregarMunicipios(pessoa.UF);
+                cmbMunicipio.SelectedValue = pessoa.Cidade;
 
                 if (!string.IsNullOrEmpty(pessoa.Imagem64))
                 {
@@ -262,6 +238,7 @@ namespace Projeto_Imoveis
 
         private async void btnPesquisar_Click(object sender, EventArgs e)
         {
+
             ViaCepClient cep = new ViaCepClient();
             CEP resultado = new CEP();
 
@@ -289,6 +266,7 @@ namespace Projeto_Imoveis
                         listViewItem.SubItems.Add(item.Complemento);
                         lswListaCEP.Items.Add(listViewItem);
                     }
+
                 }
                 else
                 {
@@ -329,13 +307,14 @@ namespace Projeto_Imoveis
                 mtxtCEP.Text = item.Text;
                 txtLogradouro.Text = item.SubItems[1].Text;
                 txtBairro.Text = item.SubItems[2].Text;
-                txtNumero.Focus();
                 pnlListaCEP.Visible = false;
+
             }
             else
             {
                 MessageBox.Show("Nenhum item na lista CEP selecionado");
             }
+            txtNumero.Focus();
         }
 
         private async Task CarregarEstados()
@@ -356,11 +335,6 @@ namespace Projeto_Imoveis
         private async void cmbUF_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            string ufSelecionada = cmbUF.SelectedValue?.ToString();
-            if (!string.IsNullOrEmpty(ufSelecionada))
-            {
-                await CarregarMunicipios(ufSelecionada);
-            }
         }
 
         private async Task CarregarMunicipios(string ufSigla)
@@ -380,21 +354,54 @@ namespace Projeto_Imoveis
 
         private async void frmCadastroPessoas_Load(object sender, EventArgs e)
         {
-            try
+
+            _ibgeApiService = new IBGEApiService();
+            await CarregarEstados();
+            await CarregarMunicipios("RS");
+            if (objPessoa != null)
             {
-                if (string.IsNullOrEmpty(txtID.Text))
+                PreencherCampos(objPessoa);
+            }
+            _ordemDeNavegacao = new List<Control>
                 {
-                    await CarregarEstados();
-                    cmbUF.SelectedValue = "RS";
-                    await CarregarMunicipios(cmbUF.Text);
-                    cmbMunicipio.SelectedValue = "Porto Alegre";
+                    txtNome,
+                    mtxtTelefone,
+                    mtxtCPF,
+                    cmbGenero,
+                    cmbEstadoCivil,
+                    dataTimePickerNascimento,
+                    mtxtCEP,
+                    cmbUF,
+                    cmbMunicipio,
+                    txtLogradouro,
+                    txtBairro,
+                    txtNumero,
+                    txtComplemento,
+                    btnCapturar,
+                    btnSalvar,
+                    btnLimpar
+                };
+            foreach (Control ctrl in _ordemDeNavegacao)
+            {
+                ctrl.KeyDown += Ctrl_KeyDown;
+            }
+        }
+
+        private async void cmbUF_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmbUF.SelectedValue != null && cmbUF.SelectedValue.ToString() != "RS")
+            {
+                string ufSelecionada = cmbUF.SelectedValue?.ToString();
+                if (!string.IsNullOrEmpty(ufSelecionada))
+                {
+                    await CarregarMunicipios(ufSelecionada);
                 }
             }
-            catch (Exception ex)
+            if (cmbUF.SelectedValue != null && cmbUF.SelectedValue.ToString() == "RS")
             {
-                MessageBox.Show($"Erro ao carregar dados: {ex.Message}");
+                await CarregarMunicipios(cmbUF.SelectedValue.ToString());
+                cmbMunicipio.SelectedValue = "Porto Alegre";
             }
-
         }
     }
     public static class ControlExtensions
