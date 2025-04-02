@@ -124,6 +124,7 @@ namespace Projeto_Imoveis
         private void frmCapturaImagem_FormClosing(object sender, FormClosingEventArgs e)
         {
             DisposeVideoSource();
+           
         }
 
         private void DisposeVideoSource()

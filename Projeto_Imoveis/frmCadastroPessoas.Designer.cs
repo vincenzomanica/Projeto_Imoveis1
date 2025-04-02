@@ -444,7 +444,6 @@
             this.cmbUF.Name = "cmbUF";
             this.cmbUF.Size = new System.Drawing.Size(41, 21);
             this.cmbUF.TabIndex = 13;
-            this.cmbUF.SelectedIndexChanged += new System.EventHandler(this.cmbUF_SelectedIndexChanged);
             this.cmbUF.SelectionChangeCommitted += new System.EventHandler(this.cmbUF_SelectionChangeCommitted);
             // 
             // cmbMunicipio

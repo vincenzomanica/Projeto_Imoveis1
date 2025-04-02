@@ -302,8 +302,9 @@ namespace Projeto_Imoveis
 {
     public class Pessoas : Base<Pessoas>
     {
-        protected string arquivoPath = @"C:\Users\vincenzo.manica\ListaPessoas.json";
+        //protected string arquivoPath = @"C:\Users\vincenzo.manica\ListaPessoas.json"; 
 
+        protected string arquivoPath = @"C:\Users\vince\OneDrive\Área de Trabalho\ListaPessoas.json";
         public string ID { get; set; }
         public string Telefone { get; set; }
         public string CPF { get; set; }

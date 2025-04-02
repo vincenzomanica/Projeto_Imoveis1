@@ -98,6 +98,8 @@ namespace Projeto_Imoveis
                     {
                         pctBoxCliente.Image = Image.FromStream(ms);
                     }
+                    pctBoxCliente.SizeMode = PictureBoxSizeMode.StretchImage;
+
                 }
                 btnSalvar.Text = "Atualizar";
             }
@@ -139,7 +141,7 @@ namespace Projeto_Imoveis
                         MessageBox.Show("Todos os campos dos Dados Pessoais são obrigatórios!");
                         return;
                     }
-                    else if (SalvarFoto().Length <= 0)
+                    else if (pessoa.Imagem64.Length <= 0)
                     {
                         MessageBox.Show("Imagem é obrigatório");
                         return;
@@ -202,9 +204,12 @@ namespace Projeto_Imoveis
             {
                 if (capturaImagem.ShowDialog() == DialogResult.OK)
                 {
+               
                     pctBoxCliente.Image = capturaImagem.CapturedImage;
+                   
                 }
             }
+            pctBoxCliente.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         private void btnLimpar_Click(object sender, EventArgs e)
@@ -231,9 +236,12 @@ namespace Projeto_Imoveis
 
         private void RandomID()
         {
+            /*
             Random random = new Random();
             int id = random.Next(1, 1000000000);
             txtID.Text = id.ToString();
+            /*/
+            txtID.Text = Guid.NewGuid().ToString("N°").Substring(0,10000000);
         }
 
         private async void btnPesquisar_Click(object sender, EventArgs e)
@@ -332,10 +340,7 @@ namespace Projeto_Imoveis
             }
         }
 
-        private async void cmbUF_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private async Task CarregarMunicipios(string ufSigla)
         {
@@ -357,34 +362,16 @@ namespace Projeto_Imoveis
 
             _ibgeApiService = new IBGEApiService();
             await CarregarEstados();
-            await CarregarMunicipios("RS");
+            cmbUF.SelectedValue = "RS";
+            await CarregarMunicipios(cmbUF.SelectedValue.ToString());
+            cmbMunicipio.SelectedValue = "Porto Alegre";
             if (objPessoa != null)
             {
                 PreencherCampos(objPessoa);
             }
-            _ordemDeNavegacao = new List<Control>
-                {
-                    txtNome,
-                    mtxtTelefone,
-                    mtxtCPF,
-                    cmbGenero,
-                    cmbEstadoCivil,
-                    dataTimePickerNascimento,
-                    mtxtCEP,
-                    cmbUF,
-                    cmbMunicipio,
-                    txtLogradouro,
-                    txtBairro,
-                    txtNumero,
-                    txtComplemento,
-                    btnCapturar,
-                    btnSalvar,
-                    btnLimpar
-                };
-            foreach (Control ctrl in _ordemDeNavegacao)
-            {
-                ctrl.KeyDown += Ctrl_KeyDown;
-            }
+            NavegacaoControles();
+
+           
         }
 
         private async void cmbUF_SelectionChangeCommitted(object sender, EventArgs e)
@@ -403,6 +390,33 @@ namespace Projeto_Imoveis
                 cmbMunicipio.SelectedValue = "Porto Alegre";
             }
         }
+        private async void 
+            NavegacaoControles()
+        {
+            _ordemDeNavegacao = new List<Control>
+            {
+                txtNome,
+                mtxtTelefone,
+                mtxtCPF,
+                cmbGenero,
+                cmbEstadoCivil,
+                dataTimePickerNascimento,
+                mtxtCEP,
+                cmbUF,
+                cmbMunicipio,
+                txtLogradouro,
+                txtBairro,
+                txtNumero,
+                txtComplemento,
+                btnCapturar,
+                btnSalvar,
+                btnLimpar
+            };
+            foreach (Control ctrl in _ordemDeNavegacao)
+            {
+                ctrl.KeyDown += Ctrl_KeyDown;
+            }
+        }
     }
     public static class ControlExtensions
     {
@@ -411,4 +425,5 @@ namespace Projeto_Imoveis
             SendKeys.Send("{F4}");
         }
     }
+    
 }
