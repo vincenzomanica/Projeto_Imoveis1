@@ -64,7 +64,7 @@
             this.txtPesquisar.Location = new System.Drawing.Point(7, 23);
             this.txtPesquisar.Margin = new System.Windows.Forms.Padding(4);
             this.txtPesquisar.Name = "txtPesquisar";
-            this.txtPesquisar.Size = new System.Drawing.Size(145, 24);
+            this.txtPesquisar.Size = new System.Drawing.Size(145, 29);
             this.txtPesquisar.TabIndex = 1;
             this.txtPesquisar.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
@@ -96,7 +96,7 @@
             this.rbtnID.Location = new System.Drawing.Point(7, 24);
             this.rbtnID.Margin = new System.Windows.Forms.Padding(4);
             this.rbtnID.Name = "rbtnID";
-            this.rbtnID.Size = new System.Drawing.Size(43, 21);
+            this.rbtnID.Size = new System.Drawing.Size(48, 28);
             this.rbtnID.TabIndex = 10;
             this.rbtnID.TabStop = true;
             this.rbtnID.Text = "ID";
@@ -108,7 +108,7 @@
             this.rbtnCPF.Location = new System.Drawing.Point(68, 60);
             this.rbtnCPF.Margin = new System.Windows.Forms.Padding(4);
             this.rbtnCPF.Name = "rbtnCPF";
-            this.rbtnCPF.Size = new System.Drawing.Size(53, 21);
+            this.rbtnCPF.Size = new System.Drawing.Size(68, 28);
             this.rbtnCPF.TabIndex = 11;
             this.rbtnCPF.TabStop = true;
             this.rbtnCPF.Text = "CPF";
@@ -120,7 +120,7 @@
             this.rbtnNome.Location = new System.Drawing.Point(7, 60);
             this.rbtnNome.Margin = new System.Windows.Forms.Padding(4);
             this.rbtnNome.Name = "rbtnNome";
-            this.rbtnNome.Size = new System.Drawing.Size(60, 21);
+            this.rbtnNome.Size = new System.Drawing.Size(83, 28);
             this.rbtnNome.TabIndex = 12;
             this.rbtnNome.TabStop = true;
             this.rbtnNome.Text = "Nome";
@@ -132,7 +132,7 @@
             this.rbtnTelefone.Location = new System.Drawing.Point(52, 24);
             this.rbtnTelefone.Margin = new System.Windows.Forms.Padding(4);
             this.rbtnTelefone.Name = "rbtnTelefone";
-            this.rbtnTelefone.Size = new System.Drawing.Size(78, 21);
+            this.rbtnTelefone.Size = new System.Drawing.Size(106, 28);
             this.rbtnTelefone.TabIndex = 13;
             this.rbtnTelefone.TabStop = true;
             this.rbtnTelefone.Text = "Telefone";
@@ -188,13 +188,13 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Modern No. 20", 11.25F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label2.Location = new System.Drawing.Point(13, 17);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 17);
+            this.label2.Size = new System.Drawing.Size(117, 24);
             this.label2.TabIndex = 3;
             this.label2.Text = "ListaCliente";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -211,7 +211,7 @@
             // 
             // ListaDeClientes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(654, 424);
@@ -224,9 +224,10 @@
             this.Controls.Add(this.btnExcluir);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lswListaClientes);
-            this.Font = new System.Drawing.Font("Modern No. 20", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ListaDeClientes";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ListaClientes";
             this.Load += new System.EventHandler(this.ListaDeClientes_Load);
             this.groupBox1.ResumeLayout(false);

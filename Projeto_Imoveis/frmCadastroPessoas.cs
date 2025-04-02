@@ -31,10 +31,11 @@ namespace Projeto_Imoveis
         public frmCadastroPessoas(Pessoas pessoa = null)
         {
             InitializeComponent();
-            
+
             this.objPessoa = pessoa;
-            
+
         }
+        
 
         private void Ctrl_KeyDown(object sender, KeyEventArgs e)
         {
@@ -66,6 +67,7 @@ namespace Projeto_Imoveis
                     else if (nextControl is DateTimePicker dtp)
                     {
                         dtp.ShowDropDown();
+                        //SendKeys.Send("{F4}");
                     }
                 }
             }
@@ -204,9 +206,9 @@ namespace Projeto_Imoveis
             {
                 if (capturaImagem.ShowDialog() == DialogResult.OK)
                 {
-               
+
                     pctBoxCliente.Image = capturaImagem.CapturedImage;
-                   
+
                 }
             }
             pctBoxCliente.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -236,12 +238,12 @@ namespace Projeto_Imoveis
 
         private void RandomID()
         {
-            /*
+
             Random random = new Random();
             int id = random.Next(1, 1000000000);
             txtID.Text = id.ToString();
-            /*/
-            txtID.Text = Guid.NewGuid().ToString("N°").Substring(0,10000000);
+           
+
         }
 
         private async void btnPesquisar_Click(object sender, EventArgs e)
@@ -302,10 +304,7 @@ namespace Projeto_Imoveis
             pnlListaCEP.Visible = false;
         }
 
-        private void dataTimePickerNascimento_Leave(object sender, EventArgs e)
-        {
-            SendKeys.Send("{F4}");
-        }
+        
 
         private void lswListaCEP_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -316,7 +315,6 @@ namespace Projeto_Imoveis
                 txtLogradouro.Text = item.SubItems[1].Text;
                 txtBairro.Text = item.SubItems[2].Text;
                 pnlListaCEP.Visible = false;
-
             }
             else
             {
@@ -340,7 +338,7 @@ namespace Projeto_Imoveis
             }
         }
 
-        
+
 
         private async Task CarregarMunicipios(string ufSigla)
         {
@@ -367,11 +365,11 @@ namespace Projeto_Imoveis
             cmbMunicipio.SelectedValue = "Porto Alegre";
             if (objPessoa != null)
             {
-                PreencherCampos(objPessoa);
+                await PreencherCampos(objPessoa);
             }
             NavegacaoControles();
 
-           
+
         }
 
         private async void cmbUF_SelectionChangeCommitted(object sender, EventArgs e)
@@ -390,8 +388,7 @@ namespace Projeto_Imoveis
                 cmbMunicipio.SelectedValue = "Porto Alegre";
             }
         }
-        private async void 
-            NavegacaoControles()
+        private async void NavegacaoControles()
         {
             _ordemDeNavegacao = new List<Control>
             {
@@ -417,6 +414,8 @@ namespace Projeto_Imoveis
                 ctrl.KeyDown += Ctrl_KeyDown;
             }
         }
+
+      
     }
     public static class ControlExtensions
     {
@@ -425,5 +424,4 @@ namespace Projeto_Imoveis
             SendKeys.Send("{F4}");
         }
     }
-    
 }
