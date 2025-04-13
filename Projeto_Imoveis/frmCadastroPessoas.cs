@@ -101,7 +101,7 @@ namespace Projeto_Imoveis
                         pctBoxCliente.Image = Image.FromStream(ms);
                     }
                     pctBoxCliente.SizeMode = PictureBoxSizeMode.StretchImage;
-
+                    
                 }
                 btnSalvar.Text = "Atualizar";
             }

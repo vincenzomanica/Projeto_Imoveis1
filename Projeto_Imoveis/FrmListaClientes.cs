@@ -100,7 +100,7 @@ namespace Projeto_Imoveis
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)13)
+            if (e.KeyChar == (char)13)  
             {
                 if (txtPesquisar.Text.Length > 0)
                 {
@@ -118,6 +118,7 @@ namespace Projeto_Imoveis
                                 listViewItem.SubItems.Add(pessoa.Nome);
                                 listViewItem.SubItems.Add(pessoa.Telefone);
                                 listViewItem.SubItems.Add(pessoa.CPF);
+                                lswListaClientes.Items.Add(listViewItem);
                             }
                     }
                     else
@@ -134,6 +135,7 @@ namespace Projeto_Imoveis
                                     listViewItem.SubItems.Add(pessoa.Nome);
                                     listViewItem.SubItems.Add(pessoa.Telefone);
                                     listViewItem.SubItems.Add(pessoa.CPF);
+                                    lswListaClientes.Items.Add(listViewItem);
                                 }
                             }
                         }
